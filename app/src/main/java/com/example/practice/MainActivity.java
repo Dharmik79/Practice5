@@ -36,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        check();
     }
 
     @Override
@@ -73,26 +71,5 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-   public void check()
-   {
-       ConnectivityManager cm=(ConnectivityManager)getApplicationContext().getSystemService(CONNECTIVITY_SERVICE);
-       NetworkInfo ni=cm.getActiveNetworkInfo();
-       if(ni!=null)
-       {
-           if(ni.getType()==ConnectivityManager.TYPE_MOBILE)
-       {
-           Toast.makeText(this,"Mobile Data is Connected",Toast.LENGTH_LONG).show();
-       }
-           if(ni.getType()==ConnectivityManager.TYPE_WIFI)
-           {
-               Toast.makeText(this,"Wifi is Connected",Toast.LENGTH_LONG).show();
-           }
 
-       }
-       else
-       {
-           Toast.makeText(this,"No internet Connection",Toast.LENGTH_LONG).show();
-       }
-
-   }
 }

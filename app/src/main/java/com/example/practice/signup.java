@@ -84,14 +84,14 @@ public class signup extends AppCompatActivity {
                     pass.setError("Password should be grater than 6");
                     return;
                 }
-                pr.setVisibility(View.VISIBLE);
+
                 fauth.createUserWithEmailAndPassword(memail,mpass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                      //   if(task.isSuccessful()) {
                             DocumentReference doc;
-                            userid = fauth.getCurrentUser().getUid();
-                            doc = fstore.collection("users").document(userid);
+
+                            doc = fstore.collection("users").document(memail);
                             Map<String, Object> map = new HashMap<>();
                             map.put("Fname", mname);
                             map.put("phone number", mph);

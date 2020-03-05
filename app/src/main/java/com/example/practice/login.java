@@ -39,7 +39,7 @@ public class login extends AppCompatActivity {
         bt=(Button)findViewById(R.id.b);
         tx=(TextView)findViewById(R.id.tef2);
         t=findViewById(R.id.e5);
-        pr=(ProgressBar)findViewById(R.id.pBar);
+
         fauth=FirebaseAuth.getInstance();
         txt1=(TextView)findViewById(R.id.e1);
         if(fauth.getCurrentUser()!=null)
@@ -57,7 +57,7 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String memail=email.getText().toString().trim();
-                String mpass=pass.getText().toString().trim();
+               final String mpass=pass.getText().toString().trim();
                 if(TextUtils.isEmpty(memail))
                 {
                    email.setError("Email should not be empty");
@@ -76,13 +76,14 @@ public class login extends AppCompatActivity {
                     email.requestFocus();
                     return;
                 }
-                pr.setVisibility(View.VISIBLE);
+
                 fauth.signInWithEmailAndPassword(memail,mpass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful())
                         {
                             Common.currentUser=memail;
+                            Common.currentPass=mpass;
                             checkemail();
 
                         }

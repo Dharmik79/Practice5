@@ -1,8 +1,10 @@
 package com.example.practice;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -23,9 +26,12 @@ import com.example.practice.Adapter.lookbookAdapter;
 import com.example.practice.Service.PicassoImageLoadingService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -41,8 +47,9 @@ import java.util.List;
 
 import ss.com.bannerslider.Slider;
 
-public class managerMain extends AppCompatActivity implements IBannerLoadInterface, ILookBookLoadListner, IBookingInfoLoadListner {
+public class managerMain extends AppCompatActivity implements IBannerLoadInterface, ILookBookLoadListner, IBookingInfoLoadListner, IBookingInformationChangeListner {
     CardView c1,c2,c3,c4,card_booking_info;
+    Button b1;
     ImageButton im;
     TextView txt_user_name,txt_salon_address,txt_salon_barber,txt_time;
     Slider banner_slider;
@@ -52,7 +59,7 @@ public class managerMain extends AppCompatActivity implements IBannerLoadInterfa
     IBookingInfoLoadListner iBookingInfoLoadListner;
     IBannerLoadInterface iBannerLoadInterface;
     ILookBookLoadListner iLookBookLoadListner;
-
+    IBookingInformationChangeListner iBookingInformationChangeListner;
     public managerMain()
     {
         banerRef= FirebaseFirestore.getInstance().collection("Banner");
@@ -63,37 +70,34 @@ public class managerMain extends AppCompatActivity implements IBannerLoadInterfa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager_main);
-        layout_user_information=findViewById(R.id.layout_user_information);
-        txt_user_name=findViewById(R.id.txt_user_name);
+
         banner_slider=findViewById(R.id.banner_slider);
         recycler_look_book=findViewById(R.id.recycler_look_book);
         card_booking_info=findViewById(R.id.card_booking_info);
         txt_salon_address=findViewById(R.id.txt_salon_address);
         txt_salon_barber=findViewById(R.id.txt_salon_barber);
         txt_time=findViewById(R.id.txt_time);
-
+        b1=findViewById(R.id.btn_change_booking);
         c1=findViewById(R.id.c1);
         c2=findViewById(R.id.c2);
         c3=findViewById(R.id.c3);
         c4=findViewById(R.id.c4);
+
+
         iBannerLoadInterface=this;
         iLookBookLoadListner=this;
         iBookingInfoLoadListner=this;
+        iBookingInformationChangeListner=this;
+
 
         Slider.init(new PicassoImageLoadingService());
         loadBanner();
         loadlookbook();
-        if(Common.currentUser!=null)
-        {
-            setUserInformation();
-
-
-        }
 
         c1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),Updatem.class));
+                startActivity(new Intent(getApplicationContext(),profile.class));
             }
         });
         c2.setOnClickListener(new View.OnClickListener() {
@@ -116,8 +120,6 @@ public class managerMain extends AppCompatActivity implements IBannerLoadInterfa
                 startActivity(new Intent(getApplicationContext(),booking.class));
             }
         });
-
-
 
     }
 
@@ -172,25 +174,18 @@ public class managerMain extends AppCompatActivity implements IBannerLoadInterfa
         });
     }
 
-    private void setUserInformation() {
-
-        layout_user_information.setVisibility(View.VISIBLE);
-        txt_user_name.setText(Common.currentUser);
-
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
         loadUserBooking();
-        loadUserBooking();
-
     }
 
     private void loadUserBooking() {
 CollectionReference userBooking=FirebaseFirestore.getInstance().collection("User").document(Common.currentUser).collection("Booking");
-
         Calendar calendar=Calendar.getInstance();
+        calendar.add(Calendar.DATE,0);
+        calendar.set(Calendar.HOUR_OF_DAY,0);
+        calendar.set(Calendar.MINUTE,0);
         Timestamp todayTimeStamp=new Timestamp(calendar.getTime());
         userBooking.whereGreaterThanOrEqualTo("timestamp",todayTimeStamp).whereEqualTo("done",false).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -203,7 +198,7 @@ CollectionReference userBooking=FirebaseFirestore.getInstance().collection("User
                         for (QueryDocumentSnapshot queryDocumentSnapshot:task.getResult())
                         {
                             BookingInformation bookingInformation=queryDocumentSnapshot.toObject(BookingInformation.class);
-                            iBookingInfoLoadListner.onBookingInfoLoadSuccess(bookingInformation);
+                            iBookingInfoLoadListner.onBookingInfoLoadSuccess(bookingInformation,queryDocumentSnapshot.getId());
                             break;
                         }
                     }
@@ -230,7 +225,7 @@ CollectionReference userBooking=FirebaseFirestore.getInstance().collection("User
 
     @Override
     public void onBannerLoadFailed(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "message", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -252,16 +247,131 @@ CollectionReference userBooking=FirebaseFirestore.getInstance().collection("User
     }
 
     @Override
-    public void onBookingInfoLoadSuccess(BookingInformation bookingInformation) {
+    public void onBookingInfoLoadSuccess(BookingInformation bookingInformation,String bookingId) {
         txt_salon_address.setText(bookingInformation.getSalonAddress());
         txt_salon_barber.setText(bookingInformation.getBarberName());
         txt_time.setText(bookingInformation.getTime());
-        card_booking_info.setVisibility(View.VISIBLE)       ;
 
+        Common.currentBooking=bookingInformation;
+        Common.currentBookingId=bookingId;
+
+        card_booking_info.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onBookingInfoLoadFailed(String message) {
 Toast.makeText(getApplication(),message,Toast.LENGTH_SHORT).show();
+    }
+
+    public void changeBooking(View view) {
+        changeBookingFromUser();
+
+    }
+
+    private void changeBookingFromUser() {
+        AlertDialog.Builder confirmDialog=new AlertDialog.Builder(managerMain.this).setCancelable(false).setTitle("Hey").setMessage("DO you really want to change the booking information ?").setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteBookingFromBarber(true);
+            }
+        });
+        confirmDialog.show();
+
+    }
+
+    public void deleteBooking(View view) {
+
+        deleteBookingFromBarber(false);
+
+    }
+
+    private void deleteBookingFromBarber(final boolean isChange) {
+
+      if(Common.currentBooking!=null)
+      {
+          DocumentReference barberBookingInfo=FirebaseFirestore.getInstance().collection("All Saloon").document(Common.currentBooking.getCityBook()).collection("Branch").document(Common.currentBooking.getSalonId()).collection("Barber").document(Common.currentBooking.getBarberId()).collection(Common.convertTimeStampToSTringKey(Common.currentBooking.getTimestamp())).document(Common.currentBooking.getSlot().toString());
+          barberBookingInfo.delete().addOnFailureListener(new OnFailureListener() {
+              @Override
+              public void onFailure(@NonNull Exception e) {
+                  Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+              }
+          }).addOnSuccessListener(new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void aVoid) {
+                  deleteBookingFromUser(isChange);
+              }
+          });
+
+
+      }
+      else
+      {
+          Toast.makeText(getApplicationContext(),"Current Booking must not be null",Toast.LENGTH_SHORT).show();
+      }
+    }
+
+    private void deleteBookingFromUser(final boolean isChange) {
+        if(!TextUtils.isEmpty((Common.currentBookingId)))
+        {
+                DocumentReference userBookingInfo=FirebaseFirestore.getInstance().collection("User").document(Common.currentUser).collection("Booking").document(Common.currentBookingId);
+
+            userBookingInfo.delete().addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(getApplicationContext(),"Successfully deleted Booking",Toast.LENGTH_SHORT).show();
+                loadUserBooking();
+
+                if(isChange)
+                {
+                    iBookingInformationChangeListner.onBookingInformationChange();
+                }
+                }
+            });
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(),"Booking Information ID must not be empty",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onBookingInformationChange() {
+
+        startActivity(new Intent(getApplicationContext(),booking.class));
+    }
+    @Override
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Please confirm");
+        builder.setMessage("Are you sure you want to exit the app and logout?");
+        builder.setCancelable(true);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                FirebaseAuth.getInstance().signOut();
+                managerMain.super.onBackPressed();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

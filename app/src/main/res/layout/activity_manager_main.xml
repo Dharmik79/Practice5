@@ -8,47 +8,7 @@
     android:orientation="vertical"
     android:background="@color/grey">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/layout_user_information"
-        android:visibility="gone"
-        android:weightSum="4"
-        android:padding="8dp"
-        android:background="@color/grey">
 
-        <ImageView
-            android:src="@drawable/ic_account_circle_white_24dp"
-            android:layout_width="60dp"
-            android:layout_height="30dp"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="DD"
-            android:id="@+id/txt_user_name"
-            android:textColor="@color/whiteColor"
-            android:textSize="12sp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Normal"
-                android:id="@+id/txt_member_type"
-                android:textColor="@color/whiteColor"
-                android:textSize="8sp"/>
-
-
-        </LinearLayout>
-
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,9 +21,8 @@
             android:orientation="horizontal"
             android:padding="8dp"
             android:weightSum="4">
-
             <androidx.cardview.widget.CardView
-                android:id="@+id/c1"
+                android:id="@+id/c4"
                 android:layout_marginRight="8dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -76,24 +35,24 @@
                     android:layout_height="wrap_content"
                     >
 
-
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/add_info"></ImageView>
+                        android:src="@drawable/calender"></ImageView>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="Add info"></TextView>
+                        android:text="Booking"></TextView>
 
 
                 </LinearLayout>
 
 
             </androidx.cardview.widget.CardView>
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/c2"
                 android:layout_marginRight="8dp"
@@ -157,7 +116,7 @@
 
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
-                android:id="@+id/c4"
+                android:id="@+id/c1"
                 android:layout_marginRight="8dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -170,17 +129,18 @@
                     android:layout_height="wrap_content"
                     >
 
+
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/calender"></ImageView>
+                        android:src="@drawable/ic_account_circle_black_24dp"></ImageView>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="Calender"></TextView>
+                        android:text="Profile"></TextView>
 
 
                 </LinearLayout>
@@ -282,7 +242,41 @@
                         android:textStyle="bold"/>
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:id="@+id/btn_change_booking"
+                        android:text="CHANGE"
+                       android:onClick="changeBooking"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_border_bg"
+                        />
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:onClick="deleteBooking"
+                        android:id="@+id/btn_delete_booking"
+                        android:background="@drawable/button_border_bg"
+                        android:text="DELETE"
+                        android:layout_weight="1"
+                         />
+
+
+
+
+
+                </LinearLayout>
+
             </LinearLayout>
+
+
 
 
         </androidx.cardview.widget.CardView>

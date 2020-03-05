@@ -4,14 +4,15 @@ import com.google.firebase.Timestamp;
 
 public class BookingInformation {
 
-    private String customername,customerPhone,time,barberId,barberName,salonId,salonName,salonAddress;
+    private String cityBook,customername,customerPhone,time,barberId,barberName,salonId,salonName,salonAddress;
     private Long slot;
     private Timestamp timestamp;
     private boolean done;
     public BookingInformation() {
     }
 
-    public BookingInformation(String customername, String customerPhone, String time, String barberId, String barberName, String salonId, String salonName, String salonAddress, Long slot) {
+    public BookingInformation(String cityBook, String customername, String customerPhone, String time, String barberId, String barberName, String salonId, String salonName, String salonAddress, Long slot, Timestamp timestamp, boolean done) {
+        this.cityBook = cityBook;
         this.customername = customername;
         this.customerPhone = customerPhone;
         this.time = time;
@@ -21,6 +22,8 @@ public class BookingInformation {
         this.salonName = salonName;
         this.salonAddress = salonAddress;
         this.slot = slot;
+        this.timestamp = timestamp;
+        this.done = done;
     }
 
     public Timestamp getTimestamp() {
@@ -109,5 +112,13 @@ public class BookingInformation {
 
     public void setSlot(Long slot) {
         this.slot = slot;
+    }
+
+    public String getCityBook() {
+        return cityBook;
+    }
+
+    public void setCityBook(String cityBook) {
+        this.cityBook = cityBook;
     }
 }

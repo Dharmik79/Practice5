@@ -1,12 +1,10 @@
 package com.example.practice;
 
-import android.content.Intent;
-import android.os.Parcelable;
-
-import com.google.firebase.firestore.auth.User;
+import com.google.firebase.Timestamp;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 class Common {
     public  static final String KEY_ENABLE_BUTTON_NEXT="ENABLE_BUTTON_NEXT";
@@ -28,6 +26,9 @@ class Common {
     public static Calendar bookingDate=Calendar.getInstance();
     public  static SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd_MM_yyyy");
     public static String currentUser;
+    public static BookingInformation currentBooking;
+    public static String currentBookingId="";
+    public static String currentPass;
 
     public static String ConvertTimeSlotToString(int slot) {
        switch (slot)
@@ -77,5 +78,12 @@ class Common {
 
        }
 
+    }
+
+    public static String convertTimeStampToSTringKey(Timestamp timestamp) {
+
+       Date date=timestamp.toDate();
+       SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd_MM_yyyy");
+        return  simpleDateFormat.format(date);
     }
 }

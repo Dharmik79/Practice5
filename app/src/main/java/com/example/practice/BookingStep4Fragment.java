@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.view.LayoutInflater;
@@ -108,6 +109,7 @@ public class BookingStep4Fragment extends Fragment {
         bookingInformation.setSalonName(Common.currentSalon.getName());
         bookingInformation.setSalonAddress(Common.currentSalon.getAddress());
         bookingInformation.setSalonId(Common.currentSalon.getSalonId());
+        bookingInformation.setCityBook(Common.city);
         bookingInformation.setTime(new StringBuilder(Common.ConvertTimeSlotToString(Common.currentTimeSlot)).append("at").append(simpleDateFormat.format(bookingDateWithourHours.getTime())).toString());
         bookingInformation.setSlot(Long.valueOf(Common.currentTimeSlot));
 
@@ -131,12 +133,14 @@ public class BookingStep4Fragment extends Fragment {
 
     private void addToUserBooking(final BookingInformation bookingInformation) {
 
-
-
-
         final CollectionReference userBooking=FirebaseFirestore.getInstance().collection("User").document(Common.currentUser).collection("Booking");
 
-        userBooking.whereEqualTo("done",false).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Calendar calendar=Calendar.getInstance();
+        calendar.add(Calendar.DATE,0);
+        calendar.set(Calendar.HOUR_OF_DAY,0);
+        calendar.set(Calendar.MINUTE,0);
+        Timestamp todayTimeStamp=new Timestamp(calendar.getTime());
+        userBooking.whereGreaterThanOrEqualTo("timestamp",todayTimeStamp).whereEqualTo("done",false).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.getResult().isEmpty())
@@ -146,9 +150,9 @@ public class BookingStep4Fragment extends Fragment {
                         @Override
                         public void onSuccess(Void aVoid) {
                             resetStaticData();
-                            getActivity().finish();
+                          getActivity().finish();
                             Toast.makeText(getContext(),"Success",Toast.LENGTH_LONG).show();
-addtoCalendar(Common.bookingDate,Common.ConvertTimeSlotToString(Common.currentTimeSlot));
+                        // addtoCalendar(Common.bookingDate,Common.ConvertTimeSlotToString(Common.currentTimeSlot));
                         }
 
                     }).addOnFailureListener(new OnFailureListener() {
@@ -171,7 +175,7 @@ addtoCalendar(Common.bookingDate,Common.ConvertTimeSlotToString(Common.currentTi
         });
     }
 
-    private void addtoCalendar(Calendar bookingDate, String startDate) {
+  /*  private void addtoCalendar(Calendar bookingDate, String startDate) {
         String startTime=Common.ConvertTimeSlotToString(Common.currentTimeSlot);
         String [] convertTime=startTime.split("-");
         String[] startTimeConvert=convertTime[0].split(":");
@@ -222,7 +226,11 @@ addtoCalendar(Common.bookingDate,Common.ConvertTimeSlotToString(Common.currentTi
             String timeZone= TimeZone.getDefault().getID();
 
             event.put(CalendarContract.Events.EVENT_TIMEZONE,timeZone);
-            Uri calendars=Uri.parse("content.//com.android,calendar/calendars");
+            Uri calendars;
+            if(Build.VERSION.SDK_INT>=8)
+                calendars=Uri.parse("content.//com.android.calendar/calendars");
+            else
+                calendars=Uri.parse("content.//calendar/events");
             getActivity().getContentResolver().insert(calendars,event);
 
 
@@ -264,7 +272,7 @@ addtoCalendar(Common.bookingDate,Common.ConvertTimeSlotToString(Common.currentTi
 
         return null;
     }
-
+*/
     private void resetStaticData() {
             Common.step=0;
             Common.currentTimeSlot=-1;

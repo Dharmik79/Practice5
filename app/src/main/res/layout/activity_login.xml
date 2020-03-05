@@ -73,22 +73,12 @@
                 android:layout_height="41dp"
                 android:layout_gravity="center"
                 android:shadowColor="#75442929"
-                android:text="Dont have an account"
+                android:text="Dont have an account?"
                 android:textColor="#131212"
                 android:textColorHighlight="#F3F5EFEF"
                 android:textColorHint="#221F1F"
                 android:textSize="18sp" />
 
-            <ProgressBar
-                android:id="@+id/pBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="68dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="68dp"
-                android:layout_marginTop="16dp"
-                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/e1"

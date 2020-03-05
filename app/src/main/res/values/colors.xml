@@ -10,5 +10,5 @@
     <color name="colorAccent">#D81B60</color>
     <color name="whiteColor">#ffffff</color>
     <color name="green">#438043</color>
-
+    <color name="gradient">#FFFFFF</color>
 </resources>

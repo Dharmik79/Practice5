@@ -53,5 +53,7 @@ dependencies {
     implementation 'com.karumi:dexter:5.0.0'
     implementation 'com.ss.bannerslider:bannerslider:2.0.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'io.paperdb:paperdb:2.6'
+
 
 }
