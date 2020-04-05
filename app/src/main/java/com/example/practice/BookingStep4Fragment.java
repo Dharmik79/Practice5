@@ -30,6 +30,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -38,7 +40,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
+import java.util.UUID;
 
 public class BookingStep4Fragment extends Fragment {
 
@@ -55,8 +60,7 @@ public class BookingStep4Fragment extends Fragment {
         txt_booking_barber_text.setText(Common.currentBarber.getName());
         txt_booking_time_text.setText(new StringBuilder(Common.ConvertTimeSlotToString(Common.currentTimeSlot)).append("at").append(simpleDateFormat.format(Common.bookingDate.getTime())));
         txt_salon_address.setText(Common.currentSalon.getAddress());
-        txt_salon_phone.setText(Common.currentSalon.getPhone());
-        txt_salon_open_hours.setText(Common.currentSalon.getOpenHours());
+
     }
 
     TextView txt_booking_barber_text,txt_booking_time_text,txt_salon_address,txt_salon_open_hours,txt_salon_phone,txt_salon_name;
@@ -104,6 +108,7 @@ public class BookingStep4Fragment extends Fragment {
 
         bookingInformation.setTimestamp(timestamp);
         bookingInformation.setDone(false);
+
         bookingInformation.setBarberId(Common.currentBarber.getBarberId());
         bookingInformation.setBarberName(Common.currentBarber.getName());
         bookingInformation.setSalonName(Common.currentSalon.getName());
@@ -150,9 +155,9 @@ public class BookingStep4Fragment extends Fragment {
                         @Override
                         public void onSuccess(Void aVoid) {
                             resetStaticData();
-                          getActivity().finish();
+                            getActivity().finish();
                             Toast.makeText(getContext(),"Success",Toast.LENGTH_LONG).show();
-                        // addtoCalendar(Common.bookingDate,Common.ConvertTimeSlotToString(Common.currentTimeSlot));
+
                         }
 
                     }).addOnFailureListener(new OnFailureListener() {
@@ -292,8 +297,7 @@ public class BookingStep4Fragment extends Fragment {
         txt_booking_time_text=(TextView)itemView.findViewById(R.id.txt_booking_time_text);
         txt_salon_address=(TextView)itemView.findViewById(R.id.txt_salon_address);
         txt_salon_name=(TextView)itemView.findViewById(R.id.txt_salon_name);
-        txt_salon_open_hours=(TextView)itemView.findViewById(R.id.txt_salon_open_hours);
-        txt_salon_phone=(TextView)itemView.findViewById(R.id.txt_salon_phone);
+
         btn_confirm=(Button)itemView.findViewById(R.id.btn_confirm);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override

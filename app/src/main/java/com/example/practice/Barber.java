@@ -4,7 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Barber implements Parcelable {
-    private String name,barberId,username,password;
+    private String name;
+    private String barberId;
+    private String username;
+    private String password;
+
+
+
+    private String phone;
     private Long Rating;
 
     public String getUsername() {

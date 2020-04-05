@@ -18,25 +18,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".update"></activity>
+        <activity android:name=".HistoryActivity"></activity>
+        <activity android:name=".update" />
         <activity android:name=".profile" />
-        <activity android:name=".signupu" />
-        <activity android:name=".loginw" />
         <activity android:name=".booking" />
-        <activity android:name=".Addm" />
-        <activity android:name=".Updatem" />
         <activity android:name=".Calender" />
         <activity android:name=".managerMain" />
-        <activity android:name=".signupm" />
-        <activity android:name=".loginm" />
-        <activity android:name=".usermain" />
         <activity android:name=".settings" />
         <activity android:name=".forget" />
         <activity android:name=".signup" />
         <activity android:name=".login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

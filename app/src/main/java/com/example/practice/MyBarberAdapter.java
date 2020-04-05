@@ -43,7 +43,7 @@ public class MyBarberAdapter extends RecyclerView.Adapter<MyBarberAdapter.MyView
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
 
         holder.txt_barber_name.setText(barberList.get(position).getName());
-        holder.ratingBar.setRating((float)barberList.get(position).getRating());
+      //  holder.ratingBar.setRating(barberList.get(position).getRating());
 
         if(!cardViewList.contains(holder.card_barber))
         {

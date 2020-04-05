@@ -103,7 +103,7 @@ public class managerMain extends AppCompatActivity implements IBannerLoadInterfa
         c2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(getApplicationContext(),HistoryActivity.class));
             }
         });
 
@@ -360,6 +360,7 @@ Toast.makeText(getApplication(),message,Toast.LENGTH_SHORT).show();
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getApplicationContext(),login.class));
                 managerMain.super.onBackPressed();
             }
         });

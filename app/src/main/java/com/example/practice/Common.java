@@ -1,12 +1,29 @@
 package com.example.practice;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Build;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-class Common {
+public class Common {
     public  static final String KEY_ENABLE_BUTTON_NEXT="ENABLE_BUTTON_NEXT";
     public static final String KEY_SALON_STORE ="SALON_SAVE" ;
     public static final String KEY_BARBER_LOAD_DONE = "BARBER_LOAD_DONE";
@@ -17,6 +34,7 @@ class Common {
     public static final Object DISABLE_TAG ="DISABLE" ;
     public static final String KEY_TIME_SLOT ="TIME_SLOT" ;
     public static final String KEY_CONFIRM_BOOKING = "CONFIRM_BOOKING";
+
     public static String IS_Login="IsLogin";
     public static Salon currentSalon;
     public static int step=0;
@@ -25,10 +43,12 @@ class Common {
     public static int currentTimeSlot=-1;
     public static Calendar bookingDate=Calendar.getInstance();
     public  static SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd_MM_yyyy");
-    public static String currentUser;
+    public static String currentUser="";
     public static BookingInformation currentBooking;
     public static String currentBookingId="";
-    public static String currentPass;
+    public static String currentPass="";
+    public static String state_name="";
+    public static Salon selectedSalon;
 
     public static String ConvertTimeSlotToString(int slot) {
        switch (slot)
@@ -86,4 +106,7 @@ class Common {
        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd_MM_yyyy");
         return  simpleDateFormat.format(date);
     }
+
+
+
 }

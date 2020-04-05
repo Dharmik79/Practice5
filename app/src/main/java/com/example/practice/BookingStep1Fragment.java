@@ -136,7 +136,6 @@ public class BookingStep1Fragment extends Fragment implements IALLSALOON, IBranc
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful())
                 {
-
                     for(QueryDocumentSnapshot documentSnapshot:task.getResult())
                     {
                         Salon salon=documentSnapshot.toObject(Salon.class);

@@ -52,7 +52,6 @@ public class BookingStep3Fragment extends Fragment implements ITimeSlotLoadListn
             Calendar date=Calendar.getInstance();
             date.add(Calendar.DATE,0);
             loadAvailableTimeSlotofSalon(Common.currentBarber.getBarberId(),simpleDateFormat.format(date.getTime()));
-
         }
     };
 

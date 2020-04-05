@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -16,10 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 public class login extends AppCompatActivity {
     EditText email,pass;
@@ -40,19 +44,11 @@ public class login extends AppCompatActivity {
         tx=(TextView)findViewById(R.id.tef2);
         t=findViewById(R.id.e5);
 
+
         fauth=FirebaseAuth.getInstance();
-        txt1=(TextView)findViewById(R.id.e1);
-        if(fauth.getCurrentUser()!=null)
-        {
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-            finish();
-        }
-        txt1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),loginm.class));
-            }
-        });
+
+
+
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,27 +102,22 @@ public class login extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),forget.class));
             }
         });
-        txt1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),loginm.class));
-            }
-        });
+
 
     }
     private void checkemail()
     {
         FirebaseUser firebaseUser = fauth.getInstance().getCurrentUser();
-        Boolean emailflag=firebaseUser.isEmailVerified();
-        if(emailflag)
-        {
+        //Boolean emailflag=firebaseUser.isEmailVerified();
+       // if(emailflag)
+        //{
             startActivity(new Intent(getApplicationContext(),managerMain.class));
-        }
+       /* }
         else
         {
             Toast.makeText(getApplicationContext(),"Verify your email",Toast.LENGTH_LONG).show();
             fauth.signOut();
-        }
+        }*/
     }
 
 
