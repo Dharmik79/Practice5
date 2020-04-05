@@ -4,17 +4,17 @@ import com.google.firebase.Timestamp;
 
 public class BookingInformation {
 
-    private String cityBook,customername,customerPhone,time,barberId,barberName,salonId,salonName,salonAddress;
+    private String cityBook,customername,time,barberId,barberName,salonId,salonName,salonAddress;
     private Long slot;
     private Timestamp timestamp;
     private boolean done;
     public BookingInformation() {
     }
 
-    public BookingInformation(String cityBook, String customername, String customerPhone, String time, String barberId, String barberName, String salonId, String salonName, String salonAddress, Long slot, Timestamp timestamp, boolean done) {
+    public BookingInformation(String cityBook, String customername,String time, String barberId, String barberName, String salonId, String salonName, String salonAddress, Long slot, Timestamp timestamp, boolean done) {
         this.cityBook = cityBook;
         this.customername = customername;
-        this.customerPhone = customerPhone;
+
         this.time = time;
         this.barberId = barberId;
         this.barberName = barberName;
@@ -50,13 +50,6 @@ public class BookingInformation {
         this.customername = customername;
     }
 
-    public String getCustomerPhone() {
-        return customerPhone;
-    }
-
-    public void setCustomerPhone(String customerPhone) {
-        this.customerPhone = customerPhone;
-    }
 
     public String getTime() {
         return time;
